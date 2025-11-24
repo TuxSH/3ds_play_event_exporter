@@ -1,0 +1,15 @@
+.vscode
+out/
+build/
+*.bin
+*.firm
+*.o
+*.d
+*.elf
+*.cxi
+*.3dsx
+.DS_Store
+*.dmp
+.project
+.cproject
+.settings

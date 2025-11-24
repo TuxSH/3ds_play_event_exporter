@@ -1,0 +1,24 @@
+CompileFlags:
+  CompilationDatabase: "build/play_event_exporter.release"
+  Add:
+    - -Wno-error # for obvious reasons (in case we enable this on this project)
+    - -Wno-unknown-pragmas # ignore GCC-specific pragmas
+    - -Wno-unknown-attributes # ignore GCC-specific attributes
+    - -Wno-assume # Clang/LLVM doesn't like some perfectly valid assume statements
+    - -Wno-redundant-consteval-if # clang-only option, interferes with LUMA_ASSERT usage
+    - -ferror-limit=0 # debug clangd failures without it stopping
+    - -Wno-c23-extensions # "#embed is a Clang extension" -> but it's actually not, not anymore
+    # Funny business with https://github.com/clangd/clangd/issues/533
+    # (longstanding issue of clangd ignoring queried compiler defines,
+    # unlike vscode-cpptools which correctly handles that use case).
+    # The issue is partially on me not using PRx32 and consorts, anyway.
+    - -D__DEVKITPRO__
+    - -D__DEVKITARM__
+    - -D__UINT32_TYPE__=unsigned long
+    - -D__INT32_TYPE__=long
+    - -fshort-enums
+  Remove:
+    - '-fconcepts-diagnostics-depth=*'
+    # Remove PCH includes as it triggers indirect GCC stdlib inclusion and clangd
+    # doesn't like that, at all. Also related: #45
+    - -include
